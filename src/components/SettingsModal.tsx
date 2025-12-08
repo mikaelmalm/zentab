@@ -12,6 +12,8 @@ interface SettingsModalProps {
   onExport: () => void;
 }
 
+import { useEffect } from 'react';
+
 export const SettingsModal = ({
   settings,
   isOpen,
@@ -20,11 +22,27 @@ export const SettingsModal = ({
   onImport,
   onExport,
 }: SettingsModalProps) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden transition-all">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden transition-all"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between p-4 border-b border-zinc-800">
           <h2 className="text-lg font-semibold text-white flex items-center gap-2">
             <SettingsIcon size={20} /> Settings
@@ -58,7 +76,23 @@ export const SettingsModal = ({
              </div>
 
              <div>
-               <label className="block text-sm font-medium text-zinc-400 mb-1">Weather Location (City)</label>
+            <label className="block text-xs font-medium text-white/70 mb-1">
+              Background Opacity ({settings.backgroundOpacity ?? 0}%)
+            </label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={settings.backgroundOpacity ?? 0}
+              onChange={(e) => onUpdateSettings({ backgroundOpacity: Number(e.target.value) })}
+              className="w-full accent-white"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-white/70 mb-1">
+              Weather Location (City)
+            </label>
                <input 
                  className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors"
                  value={settings.weatherCity || ''}

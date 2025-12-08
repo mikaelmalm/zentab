@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Malmentum 🌊
 
-## Getting Started
+**Malmentum** is a minimal, aesthetic personal dashboard grounded in simplicity and functionality. Designed to replace your "New Tab" page, it brings your bookmarks, weather, and focus together in a beautiful interface. It is inspired by Momentum](https://momentum.app/), but adjusted for more personal use.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Personalized Greeting**: Dynamic time and greeting based on your name.
+- **Bookmarks Manager**:
+  - Organize links into categories.
+  - **Drag & Drop** categories to reorder them to your liking.
+  - Edit titles, URLs, and icons on the fly.
+  - Auto-fetch favicons or use custom icon URLs.
+- **Weather Integration**:
+  - Live temperature and weather conditions.
+  - Powered by [Open-Meteo](https://open-meteo.com/) (Free, no API key required).
+  - Just set your city in Settings!
+- **Clean Mode**: Toggle a distraction-free view that hides all editing controls.
+- **Customization**:
+  - Set a custom background image URL (supports Unsplash, etc.).
+  - Toggle between 12h/24h clock formats.
+- **Local First**: All data is persisted locally in your browser so it's snappy and private. You can also **Export/Import** your data to JSON for backup.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Built with love using:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **[Next.js](https://nextjs.org/)** (App Router)
+- **[Tailwind CSS](https://tailwindcss.com/)** (Styling)
+- **[Lucide React](https://lucide.dev/)** (Icons)
+- **[@dnd-kit](https://dndkit.com/)** (Drag & Drop)
+- **TypeScript**
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone git@github.com:mikaelmalm/malmentum.git
+   cd malmentum
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**:
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   # or
+   bun install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Run the development server**:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm run dev
+   # or
+   bun dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📝 Usage
+
+- **Hover** over bookmarks to see Edit/Delete options.
+- Click the **Settings (Gear)** icon bottom-left to:
+  - Change your Name.
+  - Set your City for weather.
+  - Toggle Clean Mode.
+  - Import/Export your configuration.
+- **Drag** the handle on category headers to reorder them (unless in Clean Mode).
+
+---
+
+_Created by Mikael Malm._

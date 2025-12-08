@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { TimeDisplay } from '@/components/TimeDisplay';
-import { BookmarkGrid } from '@/components/BookmarkGrid';
+import { BookmarkGrid } from '@/components/bookmark/container/BookmarkGrid';
 import { SettingsModal } from '@/components/SettingsModal';
+import { useWeather } from '@/hooks/useWeather';
+import { Settings } from '@/types';
 import { Settings as SettingsIcon } from 'lucide-react';
 
 export default function Home() {
@@ -17,6 +19,7 @@ export default function Home() {
     deleteBookmark, 
     updateSettings,
     updateBookmark,
+    updateCategory,
     reorderCategories,
     importData, 
     exportData 
@@ -36,7 +39,11 @@ export default function Home() {
       style={bgStyle}
     >
       {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+      {/* Overlay for better text readability */}
+      <div 
+        className="absolute inset-0 bg-black backdrop-blur-[2px] transition-all duration-300"
+        style={{ opacity: (data.settings.backgroundOpacity ?? 0) / 100 }} 
+      />
 
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Top Space / Time Area */}
@@ -56,6 +63,7 @@ export default function Home() {
            <BookmarkGrid 
              categories={data.categories}
              onAddCategory={addCategory}
+             onUpdateCategory={updateCategory}
              onDeleteCategory={deleteCategory}
              onAddBookmark={addBookmark}
              onUpdateBookmark={updateBookmark}

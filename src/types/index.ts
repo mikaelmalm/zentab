@@ -17,6 +17,7 @@ export interface Settings {
   is24HourFormat: boolean;
   isCleanMode: boolean;
   weatherCity?: string;
+  backgroundOpacity: number; // 0-100
 }
 
 export interface AppState {

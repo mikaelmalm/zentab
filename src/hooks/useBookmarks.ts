@@ -12,8 +12,9 @@ const DEFAULT_STATE: AppState = {
     },
   ],
   settings: {
-    is24HourFormat: true,
+    is24HourFormat: false,
     isCleanMode: false,
+    backgroundOpacity: 0
   },
 };
 
@@ -96,6 +97,15 @@ export const useBookmarks = () => {
     }));
   }, []);
 
+  const updateCategory = useCallback((id: string, title: string) => {
+    setData((prev) => ({
+      ...prev,
+      categories: prev.categories.map((cat) => 
+        cat.id === id ? { ...cat, title } : cat
+      ),
+    }));
+  }, []);
+
   const reorderCategories = useCallback((startIndex: number, endIndex: number) => {
     setData((prev) => {
       const result = [...prev.categories];
@@ -168,6 +178,7 @@ export const useBookmarks = () => {
     data,
     isLoaded,
     addCategory,
+    updateCategory,
     deleteCategory,
     addBookmark,
     deleteBookmark,
