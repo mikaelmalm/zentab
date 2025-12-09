@@ -109,8 +109,27 @@ export const SettingsModal = ({
                  onChange={(e) => onUpdateSettings({ is24HourFormat: e.target.checked })}
                  className="rounded border-zinc-700 bg-zinc-900 text-white"
                />
-               <label htmlFor="24h" className="text-sm text-zinc-300">Use 24-hour clock format</label>
-             </div>
+                <label htmlFor="24h" className="text-sm text-zinc-300">Use 24-hour clock format</label>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Clock Size</label>
+                <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
+                  {['small', 'medium', 'large'].map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => onUpdateSettings({ timeDisplaySize: size as any })}
+                      className={`flex-1 text-xs py-1.5 rounded capitalize transition-colors ${
+                        (settings.timeDisplaySize || 'medium') === size 
+                          ? 'bg-zinc-800 text-white font-medium' 
+                          : 'text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
              <div className="flex items-center gap-3">
                <input 

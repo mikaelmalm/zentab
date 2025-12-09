@@ -1,7 +1,10 @@
+
 import { Bookmark } from '@/types';
-import { Trash2, Globe, Pencil } from 'lucide-react';
+import { Trash2, Globe, Pencil, GripVertical } from 'lucide-react';
 import { useState } from 'react';
 import { getFaviconUrl } from '@/utils/favicon';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface BookmarkItemProps {
   bookmark: Bookmark;
@@ -18,6 +21,27 @@ export const BookmarkItem = ({
   onDeleteBookmark,
   isCleanMode,
 }: BookmarkItemProps) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ 
+    id: bookmark.id,
+    data: {
+      type: 'Bookmark',
+      bookmark
+    }
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(bookmark.title);
   const [url, setUrl] = useState(bookmark.url);
@@ -51,7 +75,11 @@ export const BookmarkItem = ({
   };
 
   return (
-    <div className="group flex items-center justify-between bg-black/20 hover:bg-black/30 rounded p-2 transition-colors">
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      className={`group flex items-center justify-between bg-black/20 hover:bg-black/30 rounded p-2 transition-colors ${isDragging ? 'z-50 ring-2 ring-white/50' : ''}`}
+    >
       {isEditing ? (
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
           <input
@@ -60,18 +88,24 @@ export const BookmarkItem = ({
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onKeyDown={(e) => e.stopPropagation()} 
+            onPointerDown={(e) => e.stopPropagation()}
           />
           <input
             placeholder="URL"
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={(e) => e.stopPropagation()} 
+            onPointerDown={(e) => e.stopPropagation()}
           />
           <input
             placeholder="Icon URL (Optional)"
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
+            onKeyDown={(e) => e.stopPropagation()} 
+            onPointerDown={(e) => e.stopPropagation()}
           />
           <div className="flex justify-end gap-2 mt-1">
             <button type="button" onClick={cancelEditing} className="text-xs opacity-70 hover:opacity-100">Cancel</button>
@@ -80,11 +114,18 @@ export const BookmarkItem = ({
         </form>
       ) : (
         <>
+          {/* Drag Handle */}
+          {!isCleanMode && (
+             <div {...attributes} {...listeners} className="cursor-grab text-white/30 hover:text-white/80 mr-2 flex-shrink-0 touch-none">
+                <GripVertical size={14} />
+             </div>
+          )}
+
           <a
             href={bookmark.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 truncate text-sm font-medium flex-1"
+            className="flex items-center gap-3 truncate text-sm font-medium flex-1 text-white/90 group-hover:text-white"
           >
             <div className="p-1.5 bg-white/10 rounded-full shrink-0">
               {bookmark.icon ? (

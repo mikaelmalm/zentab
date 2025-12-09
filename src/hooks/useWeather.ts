@@ -22,7 +22,7 @@ export function useWeather(city?: string) {
       setError(false);
       try {
         // 1. Geocoding
-        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city?.trim())}&count=1&language=en&format=json`);
         const geoData = await geoRes.json();
 
         if (!geoData.results || geoData.results.length === 0) {

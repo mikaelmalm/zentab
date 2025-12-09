@@ -11,6 +11,12 @@ export interface Category {
   bookmarks: Bookmark[];
 }
 
+export interface Collection {
+  id: string;
+  title: string;
+  categories: Category[];
+}
+
 export interface Settings {
   backgroundImageUrl?: string; // If empty, use Unsplash fallback
   userName?: string; // For greeting
@@ -18,9 +24,11 @@ export interface Settings {
   isCleanMode: boolean;
   weatherCity?: string;
   backgroundOpacity: number; // 0-100
+  timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium
 }
 
 export interface AppState {
-  categories: Category[];
+  collections: Collection[];
+  activeCollectionId: string;
   settings: Settings;
 }

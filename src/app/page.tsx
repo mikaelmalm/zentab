@@ -5,6 +5,7 @@ import { useBookmarks } from '@/hooks/useBookmarks';
 import { TimeDisplay } from '@/components/TimeDisplay';
 import { BookmarkGrid } from '@/components/bookmark/container/BookmarkGrid';
 import { SettingsModal } from '@/components/SettingsModal';
+import { CollectionTabs } from '@/components/CollectionTabs';
 import { useWeather } from '@/hooks/useWeather';
 import { Settings } from '@/types';
 import { Settings as SettingsIcon } from 'lucide-react';
@@ -12,6 +13,9 @@ import { Settings as SettingsIcon } from 'lucide-react';
 export default function Home() {
   const { 
     data, 
+    activeCategories,
+    activeCollectionId,
+    collections,
     isLoaded, 
     addCategory, 
     deleteCategory, 
@@ -22,7 +26,12 @@ export default function Home() {
     updateCategory,
     reorderCategories,
     importData, 
-    exportData 
+    exportData,
+    addCollection,
+    removeCollection,
+    renameCollection,
+    setActiveCollection,
+    moveBookmark,
   } = useBookmarks();
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -33,12 +42,21 @@ export default function Home() {
     ? { backgroundImage: `url(${data.settings.backgroundImageUrl})` }
     : {}; // Fallback handled by CSS classes
 
+  // Dynamic max-height based on TimeDisplay size
+  const getMaxHeight = () => {
+     switch(data.settings.timeDisplaySize) {
+        case 'small': return '60vh';
+        case 'large': return '50vh';
+        case 'medium': 
+        default: return '55vh';
+     }
+  };
+
   return (
     <main 
       className={`min-h-screen w-full relative overflow-hidden transition-all duration-700 bg-cover bg-center ${!data.settings.backgroundImageUrl ? 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500' : ''}`}
       style={bgStyle}
     >
-      {/* Overlay for better text readability */}
       {/* Overlay for better text readability */}
       <div 
         className="absolute inset-0 bg-black backdrop-blur-[2px] transition-all duration-300"
@@ -52,16 +70,20 @@ export default function Home() {
             userName={data.settings.userName} 
             is24HourFormat={data.settings.is24HourFormat} 
             city={data.settings.weatherCity}
+            size={data.settings.timeDisplaySize}
           />
         </div>
 
         {/* Bottom Area / Bookmarks */}
         <div 
-          className="pb-24 px-4 overflow-y-auto max-h-[50vh] scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent mask-gradient"
-          style={{ maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)' }}
+          className="pb-24 px-4 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent mask-gradient transition-all duration-500"
+          style={{ 
+             maxHeight: getMaxHeight(),
+             maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)' 
+          }}
         >
            <BookmarkGrid 
-             categories={data.categories}
+             categories={activeCategories}
              onAddCategory={addCategory}
              onUpdateCategory={updateCategory}
              onDeleteCategory={deleteCategory}
@@ -69,6 +91,7 @@ export default function Home() {
              onUpdateBookmark={updateBookmark}
              onDeleteBookmark={deleteBookmark}
              onReorderCategories={reorderCategories}
+             onMoveBookmark={moveBookmark}
              isCleanMode={data.settings.isCleanMode}
            />
         </div>
@@ -80,6 +103,18 @@ export default function Home() {
         >
           <SettingsIcon size={24} />
         </button>
+
+        {/* Collection Tabs */}
+        <CollectionTabs 
+          collections={collections}
+          activeCollectionId={activeCollectionId}
+          onSetActive={setActiveCollection}
+          onAdd={addCollection}
+          onRename={renameCollection}
+          onDelete={removeCollection}
+          isCleanMode={data.settings.isCleanMode || false}
+        />
+
       </div>
 
       <SettingsModal 

@@ -1,7 +1,8 @@
+
 import { Category, Bookmark } from '@/types';
 import { Trash2, GripVertical, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
+import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { BookmarkItem } from './BookmarkItem';
 
@@ -31,7 +32,13 @@ export const SortableCategoryCard = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: category.id });
+  } = useSortable({ 
+    id: category.id,
+    data: {
+      type: 'Category',
+      category
+    }
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -60,10 +67,12 @@ export const SortableCategoryCard = ({
     }
   };
 
-  // Determine if we should show the header
-  // In Clean Mode: Hide if title is empty.
-  // In Edit Mode: Always show (use placeholder if empty).
+  
   const showHeader = !isCleanMode || category.title.trim().length > 0;
+
+  if(isCleanMode && category.bookmarks.length === 0) {
+    return null;
+  }
 
   return (
     <div
@@ -88,6 +97,8 @@ export const SortableCategoryCard = ({
                  value={category.title}
                  onChange={(e) => onUpdateCategory(category.id, e.target.value)}
                  placeholder="Untitled"
+                 onKeyDown={(e) => e.stopPropagation()} // Prevent dragging when typing
+                 onPointerDown={(e) => e.stopPropagation()}
                />
              )}
           </div>
@@ -102,18 +113,30 @@ export const SortableCategoryCard = ({
         </div>
       )}
 
-      <div className="space-y-2 mb-4 mt-4 last:mb-0">
-        {category.bookmarks.map((bookmark) => (
-          <BookmarkItem
-            key={bookmark.id}
-            bookmark={bookmark}
-            categoryId={category.id}
-            onUpdateBookmark={onUpdateBookmark}
-            onDeleteBookmark={onDeleteBookmark}
-            isCleanMode={isCleanMode}
-          />
-        ))}
-      </div>
+      {/* Bookmarks Container - Droppable Area */}
+      <SortableContext 
+         items={category.bookmarks.map(b => b.id)} 
+         strategy={verticalListSortingStrategy}
+         id={category.id} // Important for dnd-kit context
+      >
+        <div className="space-y-2 mb-4 mt-4 last:mb-0 min-h-[10px]">
+          {category.bookmarks.map((bookmark) => (
+            <BookmarkItem
+              key={bookmark.id}
+              bookmark={bookmark}
+              categoryId={category.id}
+              onUpdateBookmark={onUpdateBookmark}
+              onDeleteBookmark={onDeleteBookmark}
+              isCleanMode={isCleanMode}
+            />
+          ))}
+          {category.bookmarks.length === 0  && (
+             <div className="text-white/20 text-xs text-center py-2 italic font-light">
+                Drop bookmarks here
+             </div>
+          )}
+        </div>
+      </SortableContext>
 
       {!isCleanMode && (
         isAdding ? (
@@ -124,18 +147,24 @@ export const SortableCategoryCard = ({
               className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1 py-1"
               value={newTitle}
               onChange={e => setNewTitle(e.target.value)}
+              onKeyDown={(e) => e.stopPropagation()} 
+              onPointerDown={(e) => e.stopPropagation()}
             />
             <input
               placeholder="URL"
               className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1 py-1"
               value={newUrl}
               onChange={e => setNewUrl(e.target.value)}
+              onKeyDown={(e) => e.stopPropagation()} 
+              onPointerDown={(e) => e.stopPropagation()}
             />
              <input 
                placeholder="Icon URL (Optional)"
                className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1 py-1"
                value={newIcon}
                onChange={e => setNewIcon(e.target.value)}
+               onKeyDown={(e) => e.stopPropagation()} 
+               onPointerDown={(e) => e.stopPropagation()}
              />
             <div className="flex gap-2 justify-end mt-2">
               <button type="button" onClick={() => setIsAdding(false)} className="text-xs opacity-70 hover:opacity-100">Cancel</button>
