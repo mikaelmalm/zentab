@@ -3,7 +3,7 @@
   "name": "ZenTab",
   "short_name": "ZenTab",
   "version": "1.0.0",
-  "description": "A minimal, aesthetic new tab extension. built with Next.js",
+  "description": "A minimal, aesthetic new tab extension.",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },

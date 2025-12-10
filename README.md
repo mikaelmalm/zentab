@@ -24,7 +24,8 @@
 
 Built with love using:
 
-- **[Next.js](https://nextjs.org/)** (App Router)
+- **[React](https://react.dev/)**
+- **[Vite](https://vitejs.dev/)**
 - **[Tailwind CSS](https://tailwindcss.com/)** (Styling)
 - **[Lucide React](https://lucide.dev/)** (Icons)
 - **[@dnd-kit](https://dndkit.com/)** (Drag & Drop)
@@ -55,7 +56,22 @@ Built with love using:
    bun dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## 🧩 Add as Chrome Extension
+
+1. **Build the project**:
+
+   ```bash
+   npm run build
+   ```
+
+2. **Load into Chrome**:
+   - Open Chrome and navigate to `chrome://extensions`.
+   - Enable **Developer mode** (top right).
+   - Click **Load unpacked**.
+   - Select the `dist` folder in your project directory.
+   - Open a new tab to see **ZenTab** in action!
 
 ## 📝 Usage
 
