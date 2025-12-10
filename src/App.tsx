@@ -26,7 +26,8 @@ function App() {
     isLoaded,
     setActiveCollection,
     addCollection,
-
+    renameCollection,
+    removeCollection,
   } = useBookmarks();
 
   const settings = data.settings;
@@ -82,7 +83,7 @@ function App() {
       */}
 
       {/* Time & Date */}
-      <div className="relative z-10 mb-12">
+      <div className="relative z-10 mb-12 mt-12">
         <TimeDisplay 
           userName={settings.userName}
           is24HourFormat={settings.is24HourFormat ?? true}
@@ -117,6 +118,9 @@ function App() {
         activeCollectionId={data.activeCollectionId}
         onSelectCollection={setActiveCollection}
         onAddCollection={addCollection}
+        onRenameCollection={renameCollection}
+        onDeleteCollection={removeCollection}
+        isCleanMode={settings.isCleanMode}
       />
       
       {/* Settings Modal */}

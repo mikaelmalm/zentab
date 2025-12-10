@@ -1,6 +1,6 @@
-# Malmentum 🌊
+# ZenTab 🌊
 
-**Malmentum** is a minimal, aesthetic personal dashboard grounded in simplicity and functionality. Designed to replace your "New Tab" page, it brings your bookmarks, weather, and focus together in a beautiful interface. It is inspired by Momentum](https://momentum.app/), but adjusted for more personal use.
+**ZenTab** is a minimal, aesthetic personal dashboard grounded in simplicity and functionality. Designed to replace your "New Tab" page, it brings your bookmarks, weather, and focus together in a beautiful interface. It is inspired by Momentum, but adjusted for more personal use.
 
 ## ✨ Features
 

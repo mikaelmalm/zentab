@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AppState, Category, Settings, Collection } from '@/types';
 
-const STORAGE_KEY = 'malmentum_data';
+const STORAGE_KEY = 'zentab_data';
 
 const DEFAULT_COLLECTION_ID = 'default-collection';
 
@@ -329,7 +329,7 @@ export const useBookmarks = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `malmentum-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `zentab-backup-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

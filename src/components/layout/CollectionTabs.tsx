@@ -1,5 +1,5 @@
 import { Collection } from "@/types";
-import { Plus } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface CollectionTabsProps {
@@ -7,9 +7,9 @@ interface CollectionTabsProps {
   activeCollectionId: string;
   onSelectCollection: (id: string) => void;
   onAddCollection: (title: string) => void;
-
-  // onRenameCollection: (id: string, title: string) => void;
-  // onDeleteCollection: (id: string) => void;
+  onRenameCollection: (id: string, title: string) => void;
+  onDeleteCollection: (id: string) => void;
+  isCleanMode: boolean;
 }
 
 export const CollectionTabs = ({
@@ -17,11 +17,15 @@ export const CollectionTabs = ({
   activeCollectionId,
   onSelectCollection,
   onAddCollection,
-  // onRenameCollection,
-  // onDeleteCollection,
+  onRenameCollection,
+  onDeleteCollection,
+  isCleanMode,
 }: CollectionTabsProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+  
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,30 +36,86 @@ export const CollectionTabs = ({
     }
   };
 
-  // Only show if there is more than 1 collection or we are in adding mode?
-  // User req: "Ensure the tab switch is hidden if only one collection exists."
-  // But we need a way to add a second collection if only 1 exists!
-  // So we should probably show a small "+" button always, or have a setting?
-  // Previous design had a "+" button.
-  // Let's implement a small unified widget.
+  const handleStartEdit = (col: Collection) => {
+    if (isCleanMode) return;
+    setEditingId(col.id);
+    setEditTitle(col.title);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editTitle.trim() && editingId) {
+      onRenameCollection(editingId, editTitle);
+      setEditingId(null);
+    }
+  };
+  
+  const handleDelete = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    if (isCleanMode) return;
+    if (confirm("Are you sure you want to delete this collection?")) {
+       onDeleteCollection(id);
+    }
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
       {collections.length > 1 && (
         <div className="flex bg-black/40 backdrop-blur-md rounded-full p-1 border border-white/10">
-          {collections.map((col) => (
-            <button
-              key={col.id}
-              onClick={() => onSelectCollection(col.id)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                activeCollectionId === col.id
-                  ? "bg-white text-black shadow-lg"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              {col.title}
-            </button>
-          ))}
+          {collections.map((col) => {
+             if (editingId === col.id) {
+               return (
+                 <form key={col.id} onSubmit={handleSaveEdit} className="mx-1">
+                   <input
+                     autoFocus
+                     className="bg-transparent border-none outline-none text-white text-sm px-2 py-0.5 w-24 text-center border-b border-white/20"
+                     value={editTitle}
+                     onChange={(e) => setEditTitle(e.target.value)}
+                     onBlur={() => setEditingId(null)}
+                   />
+                 </form>
+               );
+             }
+             
+             return (
+              <div
+                key={col.id}
+                className={`group flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all select-none cursor-pointer ${
+                  activeCollectionId === col.id
+                    ? "bg-white text-black shadow-lg"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                }`}
+                onClick={() => onSelectCollection(col.id)}
+              >
+                <span>{col.title}</span>
+                
+                {!isCleanMode && (
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleStartEdit(col);
+                      }}
+                      className="p-1 hover:bg-black/10 rounded-full transition-colors"
+                      title="Rename"
+                    >
+                      <Pencil size={12} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                         e.stopPropagation();
+                         handleDelete(e, col.id);
+                      }}
+                       className="p-1 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-colors"
+                       title="Delete"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
