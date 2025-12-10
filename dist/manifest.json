@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Malmentum New Tab",
+  "version": "1.0.0",
+  "description": "Custom New Tab page built with Next.js",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": []
+}

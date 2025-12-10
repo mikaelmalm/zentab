@@ -141,6 +141,17 @@ export const SettingsModal = ({
                />
                <label htmlFor="cleanMode" className="text-sm text-zinc-300">Clean Mode (Minimalist)</label>
              </div>
+
+             <div className="flex items-center gap-3">
+               <input 
+                 type="checkbox"
+                 id="searchEnabled"
+                 checked={settings.isSearchEnabled ?? true}
+                 onChange={(e) => onUpdateSettings({ isSearchEnabled: e.target.checked })}
+                 className="rounded border-zinc-700 bg-zinc-900 text-white"
+               />
+               <label htmlFor="searchEnabled" className="text-sm text-zinc-300">Enable Search Bar</label>
+             </div>
           </div>
 
           <div className="h-px bg-zinc-800" />

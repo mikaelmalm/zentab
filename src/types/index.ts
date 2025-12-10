@@ -25,6 +25,7 @@ export interface Settings {
   weatherCity?: string;
   backgroundOpacity: number; // 0-100
   timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium
+  isSearchEnabled?: boolean;
 }
 
 export interface AppState {

@@ -23,6 +23,7 @@ const DEFAULT_STATE: AppState = {
   settings: {
     is24HourFormat: false,
     isCleanMode: false,
+    isSearchEnabled: true,
     backgroundOpacity: 0,
     timeDisplaySize: 'medium',
   },

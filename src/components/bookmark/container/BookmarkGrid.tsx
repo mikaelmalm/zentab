@@ -21,7 +21,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   rectSortingStrategy,
-  arrayMove,
+
 } from '@dnd-kit/sortable';
 import { SortableCategoryCard } from '../components/SortableCategoryCard';
 import { BookmarkItem } from '../components/BookmarkItem';
@@ -102,7 +102,7 @@ export const BookmarkGrid = ({
   };
 
   const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
+    const { over } = event;
     if (!over) return;
 
     // Only handle bookmark drag over logic here (moving between categories)
@@ -227,35 +227,23 @@ export const BookmarkGrid = ({
                       />
                    ))}
                    
-                   {/* Add Button in the last column or conditionally? 
-                       Current design had it at the end of grid. 
-                       Let's put it in the first column or separate?
-                       If we put it in the grid flow, it might be weird with masonry.
-                   */}
+                   {!isCleanMode && colIndex === (categories.length % 3) && (
+                      <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 border-dashed flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer group h-fit">
+                         <form onSubmit={handleAddCategory} className="w-full text-center">
+                             <input 
+                               placeholder="+ New Category"
+                               className="w-full bg-transparent text-center text-white placeholder-white/30 outline-none text-xl font-medium focus:placeholder-transparent"
+                               value={newCatName}
+                               onChange={e => setNewCatName(e.target.value)}
+                             />
+                         </form>
+                      </div>
+                   )}
                 </div>
              ))}
           </div>
         </SortableContext>
         
-        {/* New Category Input - placed outside grid for now, or maybe as a fixed item at bottom/top? 
-            Original design had it as a grid item. 
-            If I want it to be part of the flow, I should add it to the columns data structure as a dummy item or render it separately.
-            Let's render it at the bottom for now.
-        */}
-        {!isCleanMode && (
-          <div className="mt-8 max-w-md mx-auto">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 border-dashed flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer group h-fit">
-                 <form onSubmit={handleAddCategory} className="w-full text-center">
-                     <input 
-                       placeholder="+ New Category"
-                       className="w-full bg-transparent text-center text-white placeholder-white/30 outline-none text-xl font-medium focus:placeholder-transparent"
-                       value={newCatName}
-                       onChange={e => setNewCatName(e.target.value)}
-                     />
-                 </form>
-              </div>
-          </div>
-        )}
       </div>
 
       {/* Drag Portal for rendering the item while dragging */}

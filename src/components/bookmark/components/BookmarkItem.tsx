@@ -129,10 +129,8 @@ export const BookmarkItem = ({
           >
             <div className="p-1.5 bg-white/10 rounded-full shrink-0">
               {bookmark.icon ? (
-                 // eslint-disable-next-line @next/next/no-img-element
                  <img src={bookmark.icon} alt="" className="w-[14px] h-[14px] object-cover" />
                ) : (
-                 // eslint-disable-next-line @next/next/no-img-element
                  <img 
                    src={getFaviconUrl(bookmark.url) || ''} 
                    alt=""
