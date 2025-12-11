@@ -68,7 +68,7 @@ Built with love using:
 1. **Build the project**:
 
    ```bash
-   npm run build
+   npm run build:extension
    ```
 
 2. **Load into Chrome**:

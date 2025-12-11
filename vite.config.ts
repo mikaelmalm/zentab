@@ -10,5 +10,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/zentab/"
+  // If EXT_BUILD is set, use relative paths for extension support
+  base: process.env.EXT_BUILD === 'true' ? './' : '/zentab/'
 })
