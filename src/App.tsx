@@ -76,11 +76,7 @@ function App() {
           />
         </div>
       )}
-      
-      {/* Time & Date - Adjust margin if search is hidden to prevent jumpiness or too much space? 
-          Actually, visually it's fine. The spacing is handled by mb-12 on search and mb-12 on time.
-          If search is gone, Time will just move up. That is desired.
-      */}
+
 
       {/* Time & Date */}
       <div className="relative z-10 mb-12 mt-12">
@@ -107,9 +103,6 @@ function App() {
           isCleanMode={settings.isCleanMode}
         />
       </div>
-
-
-
 
 
       {/* Collection Tabs */}
