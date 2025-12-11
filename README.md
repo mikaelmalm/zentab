@@ -1,6 +1,11 @@
 # ZenTab 🌊
 
-**ZenTab** is a minimal, aesthetic personal dashboard grounded in simplicity and functionality. Designed to replace your "New Tab" page, it brings your bookmarks, weather, and focus together in a beautiful interface. It is inspired by Momentum, but adjusted for more personal use.
+**ZenTab** is a minimal, aesthetic personal dashboard grounded in simplicity and functionality. Designed to replace your "New Tab" page, it brings your bookmarks, weather, and focus together in a beautiful interface. It is inspired by [Momentum](https://momentum.app/).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-default.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-clean.png" width="45%" />
+</p>
 
 ## ✨ Features
 
@@ -16,12 +21,9 @@
   - Just set your city in Settings!
 - **Clean Mode**: Toggle a distraction-free view that hides all editing controls.
 - **Customization**:
-  - Set a custom background image URL (supports Unsplash, etc.).
+  - Set a custom background image URL
   - Toggle between 12h/24h clock formats.
 - **Local First**: All data is persisted locally in your browser so it's snappy and private. You can also **Export/Import** your data to JSON for backup.
-
-![zentab-default](https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-default.png)
-![zentab-clean](https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-clean.png)
 
 ## 🛠️ Tech Stack
 
