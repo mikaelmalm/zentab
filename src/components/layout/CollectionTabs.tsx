@@ -119,7 +119,6 @@ export const CollectionTabs = ({
         </div>
       )}
 
-      {/* Add Collection Button */}
       {isAdding ? (
         <form onSubmit={handleAdd} className="bg-black/60 backdrop-blur-md rounded-full p-1 border border-white/10 flex items-center">
             <input
@@ -134,7 +133,7 @@ export const CollectionTabs = ({
                 <Plus size={14} />
             </button>
         </form>
-      ) : (
+      ) : isCleanMode ? null : (
         <button 
             onClick={() => setIsAdding(true)}
             className="p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
