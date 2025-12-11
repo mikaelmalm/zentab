@@ -20,6 +20,9 @@
   - Toggle between 12h/24h clock formats.
 - **Local First**: All data is persisted locally in your browser so it's snappy and private. You can also **Export/Import** your data to JSON for backup.
 
+![zentab-default](https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-default.png)
+![zentab-clean](https://raw.githubusercontent.com/mikaelmalm/zentab/main/assets/zentab-clean.png)
+
 ## 🛠️ Tech Stack
 
 Built with love using:
