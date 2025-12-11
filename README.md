@@ -41,8 +41,8 @@ Built with love using:
 1. **Clone the repository**:
 
    ```bash
-   git clone git@github.com:mikaelmalm/malmentum.git
-   cd malmentum
+   git clone git@github.com:mikaelmalm/zentab.git
+   cd zentab
    ```
 
 2. **Install dependencies**:
