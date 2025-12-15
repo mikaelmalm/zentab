@@ -8,7 +8,6 @@ interface CollectionTabsProps {
   onSelectCollection: (id: string) => void;
   onAddCollection: (title: string) => void;
   onRenameCollection: (id: string, title: string) => void;
-  onRenameCollection: (id: string, title: string) => void;
   onDeleteCollection: (id: string) => void;
   isEditMode: boolean;
 }
@@ -79,43 +78,68 @@ export const CollectionTabs = ({
              }
              
              return (
-              <div
-                key={col.id}
-                className={`group flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all select-none cursor-pointer ${
-                  activeCollectionId === col.id
-                    ? "bg-white text-black shadow-lg"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
-                }`}
-                onClick={() => onSelectCollection(col.id)}
-              >
-                <span>{col.title}</span>
-                
-                {isEditMode && (
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-1">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStartEdit(col);
-                      }}
-                      className="p-1 hover:bg-black/10 rounded-full transition-colors"
-                      title="Rename"
-                    >
-                      <Pencil size={12} />
-                    </button>
-                    <button
-                      onClick={(e) => {
+               <button
+                 key={col.id}
+                 type="button"
+                 className={`group flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all select-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/50 ${
+                   activeCollectionId === col.id
+                     ? "bg-white text-black shadow-lg"
+                     : "text-white/60 hover:text-white hover:bg-white/10"
+                 }`}
+                 onClick={() => onSelectCollection(col.id)}
+                 onKeyDown={(e) => {
+                   if (e.key === 'Enter' || e.key === ' ') {
+                     e.preventDefault();
+                     onSelectCollection(col.id);
+                   }
+                 }}
+               >
+                 <span>{col.title}</span>
+                 
+                 {isEditMode && (
+                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity ml-1">
+                     <div
+                       role="button"
+                       tabIndex={0}
+                       onClick={(e) => {
                          e.stopPropagation();
-                         handleDelete(e, col.id);
-                      }}
-                       className="p-1 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-colors"
-                       title="Delete"
-                    >
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
+                         handleStartEdit(col);
+                       }}
+                       onKeyDown={(e) => {
+                         if (e.key === 'Enter' || e.key === ' ') {
+                           e.stopPropagation();
+                           handleStartEdit(col);
+                         }
+                       }}
+                       className="p-1 hover:bg-black/10 rounded-full transition-colors cursor-pointer"
+                       title="Rename"
+                     >
+                       <Pencil size={12} />
+                     </div>
+                     <div
+                       role="button"
+                       tabIndex={0}
+                       onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(e, col.id);
+                       }}
+                       onKeyDown={(e) => {
+                         if (e.key === 'Enter' || e.key === ' ') {
+                           e.stopPropagation();
+                           // Mock mouse event for compatibility since we need e.preventDefault in handleDelete
+                           const mockEvent = { preventDefault: () => {} } as React.MouseEvent;
+                           handleDelete(mockEvent, col.id);
+                         }
+                       }}
+                        className="p-1 hover:bg-red-500/20 hover:text-red-500 rounded-full transition-colors cursor-pointer"
+                        title="Delete"
+                     >
+                       <Trash2 size={12} />
+                     </div>
+                   </div>
+                 )}
+               </button>
+             );
           })}
         </div>
       )}
