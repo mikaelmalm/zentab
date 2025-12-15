@@ -205,7 +205,7 @@ export const BookmarkGrid = ({
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="w-full max-w-6xl mx-auto p-8">
+      <div className="w-full max-w-6xl mx-auto my-8">
         
         {/* Sortable Context for Categories - wraps everything essentially */}
         <SortableContext 
