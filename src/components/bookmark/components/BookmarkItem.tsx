@@ -12,6 +12,7 @@ interface BookmarkItemProps {
   onUpdateBookmark: (categoryId: string, bookmarkId: string, updates: Partial<Bookmark>) => void;
   onDeleteBookmark: (categoryId: string, bookmarkId: string) => void;
   isCleanMode: boolean;
+  isSearchActive?: boolean;
 }
 
 export const BookmarkItem = ({
@@ -20,6 +21,7 @@ export const BookmarkItem = ({
   onUpdateBookmark,
   onDeleteBookmark,
   isCleanMode,
+  isSearchActive = false,
 }: BookmarkItemProps) => {
   const {
     attributes,
@@ -33,7 +35,8 @@ export const BookmarkItem = ({
     data: {
       type: 'Bookmark',
       bookmark
-    }
+    },
+    disabled: isSearchActive
   });
 
   const style = {
@@ -115,7 +118,7 @@ export const BookmarkItem = ({
       ) : (
         <>
           {/* Drag Handle */}
-          {!isCleanMode && (
+          {!isCleanMode && !isSearchActive && (
              <div {...attributes} {...listeners} className="cursor-grab text-white/30 hover:text-white/80 mr-2 flex-shrink-0 touch-none">
                 <GripVertical size={14} />
              </div>

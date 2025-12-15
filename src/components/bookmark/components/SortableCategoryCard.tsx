@@ -14,6 +14,7 @@ interface SortableCategoryCardProps {
   onUpdateBookmark: (categoryId: string, bookmarkId: string, updates: Partial<Bookmark>) => void;
   onDeleteBookmark: (categoryId: string, bookmarkId: string) => void;
   isCleanMode: boolean;
+  isSearchActive?: boolean;
 }
 
 export const SortableCategoryCard = ({
@@ -24,6 +25,7 @@ export const SortableCategoryCard = ({
   onUpdateBookmark,
   onDeleteBookmark,
   isCleanMode,
+  isSearchActive = false,
 }: SortableCategoryCardProps) => {
   const {
     attributes,
@@ -37,7 +39,8 @@ export const SortableCategoryCard = ({
     data: {
       type: 'Category',
       category
-    }
+    },
+    disabled: isSearchActive
   });
 
   const style = {
@@ -83,7 +86,7 @@ export const SortableCategoryCard = ({
       {showHeader && (
         <div className="flex justify-between items-center mb-4 pb-2 border-b border-white/10">
           <div className="flex items-center gap-2 flex-1">
-             {!isCleanMode && (
+             {!isCleanMode && !isSearchActive && (
                <div {...attributes} {...listeners} className="cursor-grab hover:text-white/80 text-white/50 touch-none flex-shrink-0">
                   <GripVertical size={16} />
                </div>
@@ -128,6 +131,7 @@ export const SortableCategoryCard = ({
               onUpdateBookmark={onUpdateBookmark}
               onDeleteBookmark={onDeleteBookmark}
               isCleanMode={isCleanMode}
+              isSearchActive={isSearchActive}
             />
           ))}
           {category.bookmarks.length === 0  && (
@@ -138,7 +142,7 @@ export const SortableCategoryCard = ({
         </div>
       </SortableContext>
 
-      {!isCleanMode && (
+      {!isCleanMode && !isSearchActive && (
         isAdding ? (
           <form onSubmit={handleAddSubmit} className="space-y-2 p-2 bg-black/20 rounded">
             <input

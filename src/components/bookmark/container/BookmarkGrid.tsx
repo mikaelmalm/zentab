@@ -38,6 +38,7 @@ interface BookmarkGridProps {
   onReorderCategories: (startIndex: number, endIndex: number) => void;
   onMoveBookmark: (bookmarkId: string, sourceCategoryId: string, targetCategoryId: string, newIndex: number) => void;
   isCleanMode: boolean;
+  isSearchActive?: boolean;
 }
 
 const dropAnimation: DropAnimation = {
@@ -61,6 +62,7 @@ export const BookmarkGrid = ({
   onReorderCategories,
   onMoveBookmark,
   isCleanMode,
+  isSearchActive = false,
 }: BookmarkGridProps) => {
   const [newCatName, setNewCatName] = useState('');
   
@@ -224,10 +226,11 @@ export const BookmarkGrid = ({
                         onUpdateBookmark={onUpdateBookmark}
                         onDeleteBookmark={onDeleteBookmark}
                         isCleanMode={isCleanMode}
+                        isSearchActive={isSearchActive}
                       />
                    ))}
                    
-                   {!isCleanMode && colIndex === (categories.length % 3) && (
+                   {!isCleanMode && !isSearchActive && colIndex === (categories.length % 3) && (
                       <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 border-dashed flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer group h-fit">
                          <form onSubmit={handleAddCategory} className="w-full text-center">
                              <input 

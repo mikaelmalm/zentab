@@ -2,12 +2,15 @@ import { CollectionTabs } from "@/components/layout/CollectionTabs";
 import { SettingsModal } from "@/components/SettingsModal";
 import { TimeDisplay } from "@/components/TimeDisplay";
 import { BookmarkGrid } from "@/components/bookmark/container/BookmarkGrid";
+import { SearchBar } from "@/components/SearchBar";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import Fuse from "fuse.js";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   
   const { 
     data, 
@@ -32,6 +35,26 @@ function App() {
 
   const settings = data.settings;
 
+  // Filter categories based on search query
+  const filteredCategories = useMemo(() => {
+    if (!searchQuery.trim()) return activeCategories;
+
+    return activeCategories.map(cat => {
+       // Search within bookmarks
+       const fuse = new Fuse(cat.bookmarks, {
+          keys: ['title', 'url'],
+          threshold: 0.4,
+       });
+       
+       const results = fuse.search(searchQuery);
+       const filteredBookmarks = results.map(r => r.item);
+       
+       return {
+         ...cat,
+         bookmarks: filteredBookmarks
+       };
+    }).filter(cat => cat.bookmarks.length > 0);
+  }, [activeCategories, searchQuery]);
 
   if (!isLoaded) return null; // or a loading spinner
 
@@ -58,24 +81,7 @@ function App() {
         </svg>
       </button>
 
-      {/* Search Bar */}
-      {(settings.isSearchEnabled ?? true) && (
-        <div className="relative z-10 max-w-2xl mx-auto mb-12 pt-20">
-          <input
-            type="text"
-            placeholder="Search Google..."
-            className="w-full px-6 py-4 text-lg rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/30 shadow-lg"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                const query = e.currentTarget.value.trim();
-                if (query) {
-                   window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                }
-              }
-            }}
-          />
-        </div>
-      )}
+
 
 
       {/* Time & Date */}
@@ -88,10 +94,17 @@ function App() {
         />
       </div>
 
+      {/* Search Bar */}
+      {(settings.isSearchEnabled ?? true) && (
+        <SearchBar 
+          value={searchQuery}
+          onChange={setSearchQuery}
+        />
+      )}
       {/* Bookmarks Grid */}
       <div className="relative z-10">
         <BookmarkGrid 
-          categories={activeCategories}
+          categories={filteredCategories}
           onAddCategory={addCategory}
           onUpdateCategory={updateCategory}
           onDeleteCategory={deleteCategory}
@@ -101,6 +114,7 @@ function App() {
           onReorderCategories={reorderCategories}
           onMoveBookmark={moveBookmark}
           isCleanMode={settings.isCleanMode}
+          isSearchActive={!!searchQuery.trim()}
         />
       </div>
 
