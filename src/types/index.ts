@@ -26,6 +26,7 @@ export interface Settings {
   backgroundOpacity: number; // 0-100
   timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium
   isSearchEnabled?: boolean;
+  dateFormat?: 'long' | 'short' | 'none'; // default: short
 }
 
 export interface AppState {

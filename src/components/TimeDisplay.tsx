@@ -9,6 +9,7 @@ interface TimeDisplayProps {
   is24HourFormat: boolean;
   city?: string;
   size?: 'small' | 'medium' | 'large';
+  dateFormat?: 'long' | 'short' | 'none';
 }
 
 const getWeatherIcon = (code: number) => {
@@ -24,7 +25,7 @@ const getWeatherIcon = (code: number) => {
   return <Sun className="text-yellow-400" size={24} />;
 };
 
-export const TimeDisplay = ({ userName, is24HourFormat, city, size = 'medium' }: TimeDisplayProps) => {
+export const TimeDisplay = ({ userName, is24HourFormat, city, size = 'medium', dateFormat = 'short' }: TimeDisplayProps) => {
   const [time, setTime] = useState(new Date());
   const { weather, loading, error } = useWeather(city);
 
@@ -39,6 +40,33 @@ export const TimeDisplay = ({ userName, is24HourFormat, city, size = 'medium' }:
       minute: '2-digit',
       hour12: !is24HourFormat,
     });
+  };
+
+  const formatDate = (date: Date) => {
+    if (dateFormat === 'short') {
+      // 15/12
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+      });
+    } else {
+      // 15th December
+      // Basic implementation for "th", "st", "nd", "rd"
+      const day = date.getDate();
+      const month = date.toLocaleDateString('en-GB', { month: 'long' });
+      
+      let suffix = 'th';
+      if (day > 3 && day < 21) suffix = 'th';
+      else {
+        switch (day % 10) {
+          case 1:  suffix = "st"; break;
+          case 2:  suffix = "nd"; break;
+          case 3:  suffix = "rd"; break;
+          default: suffix = "th"; break;
+        }
+      }
+      return `${day}${suffix} ${month}`;
+    }
   };
 
   const getGreeting = () => {
@@ -81,18 +109,24 @@ export const TimeDisplay = ({ userName, is24HourFormat, city, size = 'medium' }:
           {getGreeting()}{userName ? `, ${userName}` : ''}.
         </p>
         
-        {/* Weather Display */}
-        {city && !error && (
-          <div className={`flex items-center justify-center gap-2 text-white/80 transition-opacity duration-500 ${loading ? 'opacity-50' : 'opacity-100'}`}>
-            {weather && (
-              <>
-                {getWeatherIcon(weather.weatherCode)}
-                <span className="text-xl font-medium">{Math.round(weather.temperature)}°C</span>
-              </>
-            )}
-            {loading && !weather && <span className="text-sm">Loading weather...</span>}
-          </div>
-        )}
+        {/* Weather & Date Display */}
+        <div className={`flex items-center justify-center gap-4 text-white/80 transition-opacity duration-500 ${loading ? 'opacity-50' : 'opacity-100'}`}>
+           {dateFormat !== 'none' && (
+             <span className="text-xl font-medium drop-shadow-md">{formatDate(time)}</span>
+           )}
+           
+           {city && !error && (
+             <div className="flex items-center gap-2">
+               {weather && (
+                 <>
+                   {dateFormat !== 'none' && <div className="w-[1px] h-6 bg-white/30 mx-2"></div>}
+                   {getWeatherIcon(weather.weatherCode)}
+                   <span className="text-xl font-medium">{Math.round(weather.temperature)}°C</span>
+                 </>
+               )}
+             </div>
+           )}
+        </div>
       </div>
     </div>
   );

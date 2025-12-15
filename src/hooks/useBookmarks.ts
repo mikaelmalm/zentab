@@ -26,6 +26,7 @@ const DEFAULT_STATE: AppState = {
     isSearchEnabled: true,
     backgroundOpacity: 0,
     timeDisplaySize: 'medium',
+    dateFormat: 'short',
   },
 };
 

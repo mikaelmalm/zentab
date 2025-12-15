@@ -91,6 +91,7 @@ function App() {
           is24HourFormat={settings.is24HourFormat ?? true}
           city={settings.weatherCity}
           size={settings.timeDisplaySize}
+          dateFormat={settings.dateFormat}
         />
       </div>
 

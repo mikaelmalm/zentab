@@ -131,6 +131,42 @@ export const SettingsModal = ({
                 </div>
               </div>
 
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Date Format</label>
+                <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
+                  <button
+                    onClick={() => onUpdateSettings({ dateFormat: 'short' })}
+                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                      (settings.dateFormat || 'short') === 'short' 
+                        ? 'bg-zinc-800 text-white font-medium' 
+                        : 'text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    Short
+                  </button>
+                  <button
+                    onClick={() => onUpdateSettings({ dateFormat: 'long' })}
+                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                      settings.dateFormat === 'long' 
+                        ? 'bg-zinc-800 text-white font-medium' 
+                        : 'text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    Long
+                  </button>
+                  <button
+                    onClick={() => onUpdateSettings({ dateFormat: 'none' })}
+                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                      settings.dateFormat === 'none' 
+                        ? 'bg-zinc-800 text-white font-medium' 
+                        : 'text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    None
+                  </button>
+                </div>
+              </div>
+
              <div className="flex items-center gap-3">
                <input 
                  type="checkbox"
