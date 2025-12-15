@@ -12,7 +12,7 @@ interface SettingsModalProps {
   onExport: () => void;
 }
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SettingsModal = ({
   settings,
@@ -31,6 +31,8 @@ export const SettingsModal = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const [activeTab, setActiveTab] = useState<'appearance' | 'general'>('appearance');
 
   if (!isOpen) return null;
 
@@ -52,159 +54,191 @@ export const SettingsModal = ({
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          {/* General Settings */}
-          <div className="space-y-4">
-             <div>
-               <label className="block text-sm font-medium text-zinc-400 mb-1">Your Name</label>
-               <input 
-                 className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors"
-                 value={settings.userName || ''}
-                 onChange={(e) => onUpdateSettings({ userName: e.target.value })}
-                 placeholder="Enter your name"
-               />
-             </div>
-             <div>
-               <label className="block text-sm font-medium text-zinc-400 mb-1">Background Image URL</label>
-               <input 
-                 className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors text-sm"
-                 value={settings.backgroundImageUrl || ''}
-                 onChange={(e) => onUpdateSettings({ backgroundImageUrl: e.target.value })}
-                 placeholder="https://images.unsplash.com/..."
-               />
-                <p className="text-xs text-zinc-500 mt-1">Leave empty for default gradient</p>
-             </div>
+        {/* Tabs */}
+        <div className="flex border-b border-zinc-800">
+          <button
+            onClick={() => setActiveTab('appearance')}
+            className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+              activeTab === 'appearance' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            Appearance
+            {activeTab === 'appearance' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('general')}
+            className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+              activeTab === 'general' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            General
+            {activeTab === 'general' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+            )}
+          </button>
+        </div>
 
-             <div>
-            <label className="block text-xs font-medium text-white/70 mb-1">
-              Background Opacity ({settings.backgroundOpacity ?? 0}%)
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={settings.backgroundOpacity ?? 0}
-              onChange={(e) => onUpdateSettings({ backgroundOpacity: Number(e.target.value) })}
-              className="w-full accent-white"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-medium text-white/70 mb-1">
-              Weather Location (City)
-            </label>
-               <input 
-                 className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors"
-                 value={settings.weatherCity || ''}
-                 onChange={(e) => onUpdateSettings({ weatherCity: e.target.value })}
-                 placeholder="e.g. London, New York, Tokyo"
-               />
-             </div>
-             
-             <div className="flex items-center gap-3">
-               <input 
-                 type="checkbox"
-                 id="24h"
-                 checked={settings.is24HourFormat}
-                 onChange={(e) => onUpdateSettings({ is24HourFormat: e.target.checked })}
-                 className="rounded border-zinc-700 bg-zinc-900 text-white"
-               />
-                <label htmlFor="24h" className="text-sm text-zinc-300">Use 24-hour clock format</label>
-              </div>
-
+        <div className="p-6">
+          {activeTab === 'appearance' ? (
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Clock Size</label>
-                <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
-                  {['small', 'medium', 'large'].map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => onUpdateSettings({ timeDisplaySize: size as any })}
-                      className={`flex-1 text-xs py-1.5 rounded capitalize transition-colors ${
-                        (settings.timeDisplaySize || 'medium') === size 
-                          ? 'bg-zinc-800 text-white font-medium' 
-                          : 'text-zinc-500 hover:text-zinc-300'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Date Format</label>
-                <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
-                  <button
-                    onClick={() => onUpdateSettings({ dateFormat: 'short' })}
-                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
-                      (settings.dateFormat || 'short') === 'short' 
-                        ? 'bg-zinc-800 text-white font-medium' 
-                        : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    Short
-                  </button>
-                  <button
-                    onClick={() => onUpdateSettings({ dateFormat: 'long' })}
-                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
-                      settings.dateFormat === 'long' 
-                        ? 'bg-zinc-800 text-white font-medium' 
-                        : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    Long
-                  </button>
-                  <button
-                    onClick={() => onUpdateSettings({ dateFormat: 'none' })}
-                    className={`flex-1 text-xs py-1.5 rounded transition-colors ${
-                      settings.dateFormat === 'none' 
-                        ? 'bg-zinc-800 text-white font-medium' 
-                        : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    None
-                  </button>
-                </div>
-              </div>
-
-             <div className="flex items-center gap-3">
-               <input 
-                 type="checkbox"
-                 id="searchEnabled"
-                 checked={settings.isSearchEnabled ?? true}
-                 onChange={(e) => onUpdateSettings({ isSearchEnabled: e.target.checked })}
-                 className="rounded border-zinc-700 bg-zinc-900 text-white"
-               />
-               <label htmlFor="searchEnabled" className="text-sm text-zinc-300">Enable Search Bar</label>
-             </div>
-          </div>
-
-          <div className="h-px bg-zinc-800" />
-
-          {/* Data Management */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium text-zinc-400 uppercase tracking-wider text-xs">Data Management</h3>
-            <div className="flex gap-3">
-              <button 
-                onClick={onExport}
-                className="flex-1 flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium"
-              >
-                <Download size={16} /> Export Data
-              </button>
-              <label className="flex-1 flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium cursor-pointer">
-                <Upload size={16} /> Import Data
+                <label className="block text-sm font-medium text-zinc-400 mb-1.5">Your Name</label>
                 <input 
-                  type="file" 
-                  accept=".json" 
-                  className="hidden" 
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) onImport(file);
-                  }}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors"
+                  value={settings.userName || ''}
+                  onChange={(e) => onUpdateSettings({ userName: e.target.value })}
+                  placeholder="Enter your name"
                 />
-              </label>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-1.5">Background Image URL</label>
+                <input 
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors text-sm"
+                  value={settings.backgroundImageUrl || ''}
+                  onChange={(e) => onUpdateSettings({ backgroundImageUrl: e.target.value })}
+                  placeholder="https://images.unsplash.com/..."
+                />
+                <p className="text-xs text-zinc-500 mt-1">Leave empty for default gradient</p>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className="block text-sm font-medium text-zinc-400">Background Opacity</label>
+                  <span className="text-xs text-zinc-500">{settings.backgroundOpacity ?? 0}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={settings.backgroundOpacity ?? 0}
+                  onChange={(e) => onUpdateSettings({ backgroundOpacity: Number(e.target.value) })}
+                  className="w-full accent-white"
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-5">
+               <div>
+                 <label className="block text-sm font-medium text-zinc-400 mb-1.5">Weather Location</label>
+                 <input 
+                   className="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white focus:outline-none focus:border-zinc-600 transition-colors"
+                   value={settings.weatherCity || ''}
+                   onChange={(e) => onUpdateSettings({ weatherCity: e.target.value })}
+                   placeholder="e.g. London, New York, Tokyo"
+                 />
+               </div>
+
+             
+                 <div>
+                   <label className="block text-sm font-medium text-zinc-400 mb-1.5">Clock Size</label>
+                   <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
+                     {['small', 'medium', 'large'].map((size) => (
+                       <button
+                         key={size}
+                         onClick={() => onUpdateSettings({ timeDisplaySize: size as any })}
+                         className={`flex-1 text-xs py-1.5 rounded capitalize transition-colors ${
+                           (settings.timeDisplaySize || 'medium') === size 
+                             ? 'bg-zinc-800 text-white font-medium' 
+                             : 'text-zinc-500 hover:text-zinc-300'
+                         }`}
+                       >
+                         {size}
+                       </button>
+                     ))}
+                   </div>
+                 </div>
+
+                 <div>
+                    <label className="block text-sm font-medium text-zinc-400 mb-1.5">Date Format</label>
+                    <div className="flex bg-zinc-950 rounded border border-zinc-800 p-1">
+                      <button
+                        onClick={() => onUpdateSettings({ dateFormat: 'short' })}
+                        className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                          (settings.dateFormat || 'short') === 'short' 
+                            ? 'bg-zinc-800 text-white font-medium' 
+                            : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        Short
+                      </button>
+                      <button
+                        onClick={() => onUpdateSettings({ dateFormat: 'long' })}
+                        className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                          settings.dateFormat === 'long' 
+                            ? 'bg-zinc-800 text-white font-medium' 
+                            : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        Long
+                      </button>
+                      <button
+                        onClick={() => onUpdateSettings({ dateFormat: 'none' })}
+                        className={`flex-1 text-xs py-1.5 rounded transition-colors ${
+                          settings.dateFormat === 'none' 
+                            ? 'bg-zinc-800 text-white font-medium' 
+                            : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                      >
+                        None
+                      </button>
+                    </div>
+                 </div>
+        
+
+               <div className="space-y-3 pt-2">
+                 <div className="flex items-center gap-3">
+                   <input 
+                     type="checkbox"
+                     id="searchEnabled"
+                     checked={settings.isSearchEnabled ?? true}
+                     onChange={(e) => onUpdateSettings({ isSearchEnabled: e.target.checked })}
+                     className="rounded border-zinc-700 bg-zinc-900 text-white"
+                   />
+                   <label htmlFor="searchEnabled" className="text-sm text-zinc-300">Enable Search Bar</label>
+                 </div>
+
+                 <div className="flex items-center gap-3">
+                   <input 
+                     type="checkbox"
+                     id="24h"
+                     checked={settings.is24HourFormat}
+                     onChange={(e) => onUpdateSettings({ is24HourFormat: e.target.checked })}
+                     className="rounded border-zinc-700 bg-zinc-900 text-white"
+                   />
+                    <label htmlFor="24h" className="text-sm text-zinc-300">Use 24-hour clock format</label>
+                  </div>
+               </div>
+
+               <div className="h-px bg-zinc-800 my-4" />
+
+               <div>
+                 <h3 className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-3">Data Management</h3>
+                 <div className="flex gap-3">
+                   <button 
+                     onClick={onExport}
+                     className="flex-1 flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium"
+                   >
+                     <Download size={16} /> Export
+                   </button>
+                   <label className="flex-1 flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium cursor-pointer">
+                     <Upload size={16} /> Import
+                     <input 
+                       type="file" 
+                       accept=".json" 
+                       className="hidden" 
+                       onChange={(e) => {
+                         const file = e.target.files?.[0];
+                         if (file) onImport(file);
+                       }}
+                     />
+                   </label>
+                 </div>
+               </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
