@@ -15,7 +15,7 @@ const SettingsComponent = ({ settings, onUpdateSettings }: ExtensionSettingsProp
          <label htmlFor="nameday-enabled" className="text-sm text-zinc-300">Enable Nameday Display</label>
        </div>
        <p className="text-xs text-zinc-500">
-         Displays the current nameday(s) in Sweden using workgroup.se API.
+         Displays the current nameday(s) in Sweden
        </p>
     </div>
   );
