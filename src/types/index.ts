@@ -27,6 +27,7 @@ export interface Settings {
   timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium
   isSearchEnabled?: boolean;
   dateFormat?: 'long' | 'short' | 'none'; // default: short
+  extensionSettings: Record<string, any>;
 }
 
 export interface AppState {

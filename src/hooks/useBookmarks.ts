@@ -27,6 +27,7 @@ const DEFAULT_STATE: AppState = {
     backgroundOpacity: 0,
     timeDisplaySize: 'medium',
     dateFormat: 'short',
+    extensionSettings: {},
   },
 };
 

@@ -13,6 +13,7 @@ interface SettingsModalProps {
 }
 
 import { useEffect, useState } from 'react';
+import { getExtensions } from "@/extensions/registry";
 
 export const SettingsModal = ({
   settings,
@@ -32,7 +33,9 @@ export const SettingsModal = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const [activeTab, setActiveTab] = useState<'appearance' | 'general'>('appearance');
+  const [activeTab, setActiveTab] = useState<'appearance' | 'general' | 'extensions'>('appearance');
+
+  const extensions = getExtensions();
 
   if (!isOpen) return null;
 
@@ -78,6 +81,17 @@ export const SettingsModal = ({
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
             )}
           </button>
+          <button
+            onClick={() => setActiveTab('extensions')}
+            className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+              activeTab === 'extensions' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            Extensions
+            {activeTab === 'extensions' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+            )}
+          </button>
         </div>
 
         <div className="p-6">
@@ -119,7 +133,7 @@ export const SettingsModal = ({
                 />
               </div>
             </div>
-          ) : (
+          ) : activeTab === 'general' ? (
             <div className="space-y-5">
                <div>
                  <label className="block text-sm font-medium text-zinc-400 mb-1.5">Weather Location</label>
@@ -237,6 +251,38 @@ export const SettingsModal = ({
                    </label>
                  </div>
                </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {extensions.map(ext => {
+                const SettingsComp = ext.settingsComponent;
+                if (!SettingsComp) return null;
+
+                const extSettings = settings.extensionSettings?.[ext.id] ?? ext.defaultSettings;
+
+                return (
+                  <div key={ext.id}>
+                    <h3 className="text-sm font-medium text-white mb-2">{ext.name}</h3>
+                    <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-3">
+                       <SettingsComp 
+                         settings={extSettings} 
+                         onUpdateSettings={(newVals) => {
+                           const newExtensionSettings = {
+                             ...(settings.extensionSettings || {}),
+                             [ext.id]: newVals,
+                           };
+                           onUpdateSettings({ extensionSettings: newExtensionSettings });
+                         }} 
+                       />
+                    </div>
+                  </div>
+                );
+              })}
+              {extensions.length === 0 && (
+                <div className="text-center text-zinc-500 py-8">
+                  No extensions installed.
+                </div>
+              )}
             </div>
           )}
         </div>

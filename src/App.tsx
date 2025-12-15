@@ -5,6 +5,7 @@ import { BookmarkGrid } from "@/components/bookmark/container/BookmarkGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import Fuse from "fuse.js";
+import { getExtensions } from "@/extensions/registry";
 
 import { useState, useMemo } from "react";
 
@@ -56,6 +57,8 @@ function App() {
     }).filter(cat => cat.bookmarks.length > 0);
   }, [activeCategories, searchQuery]);
 
+const extensions = getExtensions();
+
   if (!isLoaded) return null; // or a loading spinner
 
   return (
@@ -93,7 +96,7 @@ function App() {
         className="p-2 rounded-full backdrop-blur-md border transition-all bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all opacity-40 hover:opacity-100 focus:opacity-100"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0-.73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
           <circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
@@ -102,7 +105,7 @@ function App() {
 
 
       {/* Time & Date */}
-      <div className="relative z-10 mb-12 mt-12">
+      <div className="relative z-10 mb-12 mt-12 flex flex-col items-center">
         <TimeDisplay 
           userName={settings.userName}
           is24HourFormat={settings.is24HourFormat ?? true}
@@ -110,6 +113,13 @@ function App() {
           size={settings.timeDisplaySize}
           dateFormat={settings.dateFormat}
         />
+        
+        {/* Render Extensions */}
+        {extensions.map(ext => {
+           const extSettings = settings.extensionSettings?.[ext.id] ?? ext.defaultSettings;
+           const Component = ext.component;
+           return <Component key={ext.id} settings={extSettings} />;
+        })}
       </div>
 
       {/* Search Bar */}
