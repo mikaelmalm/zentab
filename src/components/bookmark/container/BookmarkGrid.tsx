@@ -37,7 +37,7 @@ interface BookmarkGridProps {
   onDeleteBookmark: (categoryId: string, bookmarkId: string) => void;
   onReorderCategories: (startIndex: number, endIndex: number) => void;
   onMoveBookmark: (bookmarkId: string, sourceCategoryId: string, targetCategoryId: string, newIndex: number) => void;
-  isCleanMode: boolean;
+  isEditMode: boolean;
   isSearchActive?: boolean;
 }
 
@@ -61,7 +61,7 @@ export const BookmarkGrid = ({
   onDeleteBookmark,
   onReorderCategories,
   onMoveBookmark,
-  isCleanMode,
+  isEditMode,
   isSearchActive = false,
 }: BookmarkGridProps) => {
   const [newCatName, setNewCatName] = useState('');
@@ -225,12 +225,12 @@ export const BookmarkGrid = ({
                         onAddBookmark={onAddBookmark}
                         onUpdateBookmark={onUpdateBookmark}
                         onDeleteBookmark={onDeleteBookmark}
-                        isCleanMode={isCleanMode}
+                        isEditMode={isEditMode}
                         isSearchActive={isSearchActive}
                       />
                    ))}
                    
-                   {!isCleanMode && !isSearchActive && colIndex === (categories.length % 3) && (
+                   {isEditMode && !isSearchActive && colIndex === (categories.length % 3) && (
                       <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 border-dashed flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer group h-fit">
                          <form onSubmit={handleAddCategory} className="w-full text-center">
                              <input 
@@ -261,7 +261,7 @@ export const BookmarkGrid = ({
                   onAddBookmark={() => {}}
                   onUpdateBookmark={() => {}}
                   onDeleteBookmark={() => {}}
-                  isCleanMode={isCleanMode}
+                  isEditMode={isEditMode}
                 />
              </div>
           ) : activeId && activeType === 'Bookmark' && activeItem ? (
@@ -271,7 +271,7 @@ export const BookmarkGrid = ({
                    categoryId="overlay"
                    onUpdateBookmark={() => {}}
                    onDeleteBookmark={() => {}}
-                   isCleanMode={isCleanMode}
+                   isEditMode={isEditMode}
                 />
              </div>
           ) : null}

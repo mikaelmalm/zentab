@@ -13,7 +13,7 @@ interface SortableCategoryCardProps {
   onAddBookmark: (categoryId: string, title: string, url: string, icon?: string) => void;
   onUpdateBookmark: (categoryId: string, bookmarkId: string, updates: Partial<Bookmark>) => void;
   onDeleteBookmark: (categoryId: string, bookmarkId: string) => void;
-  isCleanMode: boolean;
+  isEditMode: boolean;
   isSearchActive?: boolean;
 }
 
@@ -24,7 +24,7 @@ export const SortableCategoryCard = ({
   onAddBookmark,
   onUpdateBookmark,
   onDeleteBookmark,
-  isCleanMode,
+  isEditMode,
   isSearchActive = false,
 }: SortableCategoryCardProps) => {
   const {
@@ -71,9 +71,9 @@ export const SortableCategoryCard = ({
   };
 
   
-  const showHeader = !isCleanMode || category.title.trim().length > 0;
+  const showHeader = isEditMode || category.title.trim().length > 0;
 
-  if(isCleanMode && category.bookmarks.length === 0) {
+  if(!isEditMode && category.bookmarks.length === 0) {
     return null;
   }
 
@@ -86,13 +86,13 @@ export const SortableCategoryCard = ({
       {showHeader && (
         <div className="flex justify-between items-center mb-4 pb-2 border-b border-white/10">
           <div className="flex items-center gap-2 flex-1">
-             {!isCleanMode && !isSearchActive && (
+             {isEditMode && !isSearchActive && (
                <div {...attributes} {...listeners} className="cursor-grab hover:text-white/80 text-white/50 touch-none flex-shrink-0">
                   <GripVertical size={16} />
                </div>
              )}
              
-             {isCleanMode ? (
+             {!isEditMode ? (
                 <h3 className="font-semibold text-lg truncate">{category.title}</h3>
              ) : (
                <input 
@@ -105,7 +105,7 @@ export const SortableCategoryCard = ({
                />
              )}
           </div>
-          {!isCleanMode && (
+          {isEditMode && (
             <button
               onClick={() => onDeleteCategory(category.id)}
               className="text-white/50 hover:text-red-300 transition-colors p-1 flex-shrink-0 ml-2"
@@ -130,7 +130,7 @@ export const SortableCategoryCard = ({
               categoryId={category.id}
               onUpdateBookmark={onUpdateBookmark}
               onDeleteBookmark={onDeleteBookmark}
-              isCleanMode={isCleanMode}
+              isEditMode={isEditMode}
               isSearchActive={isSearchActive}
             />
           ))}
@@ -142,7 +142,7 @@ export const SortableCategoryCard = ({
         </div>
       </SortableContext>
 
-      {!isCleanMode && !isSearchActive && (
+      {isEditMode && !isSearchActive && (
         isAdding ? (
           <form onSubmit={handleAddSubmit} className="space-y-2 p-2 bg-black/20 rounded">
             <input

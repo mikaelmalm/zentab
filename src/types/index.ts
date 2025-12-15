@@ -21,7 +21,7 @@ export interface Settings {
   backgroundImageUrl?: string; // If empty, use Unsplash fallback
   userName?: string; // For greeting
   is24HourFormat: boolean;
-  isCleanMode: boolean;
+  isEditMode: boolean;
   weatherCity?: string;
   backgroundOpacity: number; // 0-100
   timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium

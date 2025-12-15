@@ -8,8 +8,9 @@ interface CollectionTabsProps {
   onSelectCollection: (id: string) => void;
   onAddCollection: (title: string) => void;
   onRenameCollection: (id: string, title: string) => void;
+  onRenameCollection: (id: string, title: string) => void;
   onDeleteCollection: (id: string) => void;
-  isCleanMode: boolean;
+  isEditMode: boolean;
 }
 
 export const CollectionTabs = ({
@@ -19,7 +20,7 @@ export const CollectionTabs = ({
   onAddCollection,
   onRenameCollection,
   onDeleteCollection,
-  isCleanMode,
+  isEditMode,
 }: CollectionTabsProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -37,7 +38,7 @@ export const CollectionTabs = ({
   };
 
   const handleStartEdit = (col: Collection) => {
-    if (isCleanMode) return;
+    if (!isEditMode) return;
     setEditingId(col.id);
     setEditTitle(col.title);
   };
@@ -52,7 +53,7 @@ export const CollectionTabs = ({
   
   const handleDelete = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
-    if (isCleanMode) return;
+    if (!isEditMode) return;
     if (confirm("Are you sure you want to delete this collection?")) {
        onDeleteCollection(id);
     }
@@ -89,7 +90,7 @@ export const CollectionTabs = ({
               >
                 <span>{col.title}</span>
                 
-                {!isCleanMode && (
+                {isEditMode && (
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-1">
                     <button
                       onClick={(e) => {
@@ -133,7 +134,7 @@ export const CollectionTabs = ({
                 <Plus size={14} />
             </button>
         </form>
-      ) : isCleanMode ? null : (
+      ) : !isEditMode ? null : (
         <button 
             onClick={() => setIsAdding(true)}
             className="p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"

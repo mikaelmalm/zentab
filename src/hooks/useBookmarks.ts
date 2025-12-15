@@ -22,7 +22,7 @@ const DEFAULT_STATE: AppState = {
   activeCollectionId: DEFAULT_COLLECTION_ID,
   settings: {
     is24HourFormat: false,
-    isCleanMode: false,
+    isEditMode: false,
     isSearchEnabled: true,
     backgroundOpacity: 0,
     timeDisplaySize: 'medium',
@@ -46,6 +46,12 @@ export const useBookmarks = () => {
            console.warn('Old data format detected. Resetting to default state.');
            setData(DEFAULT_STATE);
         } else {
+           // Migration for Edit Mode
+           if (parsed.settings && 'isCleanMode' in parsed.settings) {
+              parsed.settings.isEditMode = !parsed.settings.isCleanMode;
+              delete parsed.settings.isCleanMode;
+           }
+           
            setData(parsed);
         }
       } catch (e) {

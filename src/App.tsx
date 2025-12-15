@@ -81,6 +81,21 @@ function App() {
         </svg>
       </button>
 
+      {/* Edit Mode Toggle */}
+      <button
+        onClick={() => updateSettings({ isEditMode: !settings.isEditMode })}
+        className={`fixed top-6 right-20 z-50 p-3 rounded-full backdrop-blur-md border transition-all ${
+          settings.isEditMode 
+            ? "bg-white text-black border-white opacity-100" 
+            : "bg-white/10 border-white/20 text-white opacity-40 hover:opacity-100 hover:bg-white/20"
+        }`}
+        title={settings.isEditMode ? "Finish Editing" : "Edit Mode"}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+        </svg>
+      </button>
+
 
 
 
@@ -114,7 +129,7 @@ function App() {
           onDeleteBookmark={deleteBookmark}
           onReorderCategories={reorderCategories}
           onMoveBookmark={moveBookmark}
-          isCleanMode={settings.isCleanMode}
+          isEditMode={settings.isEditMode}
           isSearchActive={!!searchQuery.trim()}
         />
       </div>
@@ -128,7 +143,7 @@ function App() {
         onAddCollection={addCollection}
         onRenameCollection={renameCollection}
         onDeleteCollection={removeCollection}
-        isCleanMode={settings.isCleanMode}
+        isEditMode={settings.isEditMode}
       />
       
       {/* Settings Modal */}

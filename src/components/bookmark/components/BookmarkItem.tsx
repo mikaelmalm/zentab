@@ -11,7 +11,7 @@ interface BookmarkItemProps {
   categoryId: string;
   onUpdateBookmark: (categoryId: string, bookmarkId: string, updates: Partial<Bookmark>) => void;
   onDeleteBookmark: (categoryId: string, bookmarkId: string) => void;
-  isCleanMode: boolean;
+  isEditMode: boolean;
   isSearchActive?: boolean;
 }
 
@@ -20,7 +20,7 @@ export const BookmarkItem = ({
   categoryId,
   onUpdateBookmark,
   onDeleteBookmark,
-  isCleanMode,
+  isEditMode,
   isSearchActive = false,
 }: BookmarkItemProps) => {
   const {
@@ -118,7 +118,7 @@ export const BookmarkItem = ({
       ) : (
         <>
           {/* Drag Handle */}
-          {!isCleanMode && !isSearchActive && (
+          {isEditMode && !isSearchActive && (
              <div {...attributes} {...listeners} className="cursor-grab text-white/30 hover:text-white/80 mr-2 flex-shrink-0 touch-none">
                 <GripVertical size={14} />
              </div>
@@ -148,7 +148,7 @@ export const BookmarkItem = ({
             </div>
             <span className="truncate">{bookmark.title}</span>
           </a>
-          {!isCleanMode && (
+          {isEditMode && (
             <div className="flex items-center opacity-0 group-hover:opacity-100 transition-all">
               <button
                 onClick={startEditing}
