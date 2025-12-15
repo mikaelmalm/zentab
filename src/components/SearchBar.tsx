@@ -1,4 +1,3 @@
-import { Search } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 interface SearchBarProps {

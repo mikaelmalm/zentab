@@ -4,6 +4,8 @@ import { TimeDisplay } from "@/components/TimeDisplay";
 import { BookmarkGrid } from "@/components/bookmark/container/BookmarkGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import { useSettings } from "@/hooks/useSettings";
+import { useZentabData } from "@/hooks/useZentabData";
 import Fuse from "fuse.js";
 import { getExtensions } from "@/extensions/registry";
 
@@ -11,31 +13,29 @@ import { useState, useMemo } from "react";
 
 function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  
+  const { data, setData, isLoaded, exportData, importData } = useZentabData();
+  const { settings, updateSettings } = useSettings(data, setData);
+  const {
+      activeCategories,
+      activeCollectionId,
+      collections,
+      addCategory,
+      updateCategory,
+      deleteCategory,
+      addBookmark,
+      deleteBookmark,
+      updateBookmark,
+      reorderCategories,
+      addCollection,
+      removeCollection,
+      renameCollection,
+      setActiveCollection,
+      moveBookmark,
+  } = useBookmarks(data, setData);
+
   const [searchQuery, setSearchQuery] = useState("");
   
-  const { 
-    data, 
-    activeCategories, 
-    addCategory, 
-    updateCategory, 
-    deleteCategory, 
-    addBookmark, 
-    updateBookmark, 
-    deleteBookmark, 
-    moveBookmark,
-    reorderCategories,
-    updateSettings, 
-    exportData, 
-    importData,
-    isLoaded,
-    setActiveCollection,
-    addCollection,
-    renameCollection,
-    removeCollection,
-  } = useBookmarks();
-
-  const settings = data.settings;
-
   // Filter categories based on search query
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return activeCategories;
@@ -149,8 +149,8 @@ const extensions = getExtensions();
 
       {/* Collection Tabs */}
       <CollectionTabs 
-        collections={data.collections}
-        activeCollectionId={data.activeCollectionId}
+        collections={collections}
+        activeCollectionId={activeCollectionId}
         onSelectCollection={setActiveCollection}
         onAddCollection={addCollection}
         onRenameCollection={renameCollection}

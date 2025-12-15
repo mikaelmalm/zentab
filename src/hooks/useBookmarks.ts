@@ -1,75 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { AppState, Category, Settings, Collection } from '@/types';
+import { useCallback } from 'react';
+import { AppState, Category, Collection } from '@/types';
 
-const STORAGE_KEY = 'zentab_data';
-
-const DEFAULT_COLLECTION_ID = 'default-collection';
-
-const DEFAULT_STATE: AppState = {
-  collections: [
-    {
-      id: DEFAULT_COLLECTION_ID,
-      title: 'My Bookmarks',
-      categories: [
-        {
-          id: 'default',
-          title: 'General',
-          bookmarks: [],
-        },
-      ],
-    },
-  ],
-  activeCollectionId: DEFAULT_COLLECTION_ID,
-  settings: {
-    is24HourFormat: false,
-    isEditMode: false,
-    isSearchEnabled: true,
-    backgroundOpacity: 0,
-    timeDisplaySize: 'medium',
-    dateFormat: 'short',
-    extensionSettings: {},
-  },
-};
-
-export const useBookmarks = () => {
-  const [data, setData] = useState<AppState>(DEFAULT_STATE);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load from local storage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        
-        // Simple schema check - if no collections, reset to default (Breaking Change as requested)
-        if (!parsed.collections || !Array.isArray(parsed.collections)) {
-           console.warn('Old data format detected. Resetting to default state.');
-           setData(DEFAULT_STATE);
-        } else {
-           // Migration for Edit Mode
-           if (parsed.settings && 'isCleanMode' in parsed.settings) {
-              parsed.settings.isEditMode = !parsed.settings.isCleanMode;
-              delete parsed.settings.isCleanMode;
-           }
-           
-           setData(parsed);
-        }
-      } catch (e) {
-        console.error('Failed to parse local storage', e);
-        setData(DEFAULT_STATE);
-      }
-    }
-    setIsLoaded(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Save to local storage on change
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-  }, [data, isLoaded]);
+export const useBookmarks = ( data: AppState, setData: React.Dispatch<React.SetStateAction<AppState>> ) => {
 
   // --- Collection Management ---
 
@@ -84,7 +16,7 @@ export const useBookmarks = () => {
       collections: [...prev.collections, newCollection],
       activeCollectionId: newCollection.id, // Auto-switch to new collection
     }));
-  }, []);
+  }, [setData]);
 
   const removeCollection = useCallback((id: string) => {
     setData((prev) => {
@@ -106,7 +38,7 @@ export const useBookmarks = () => {
         activeCollectionId: newActiveId,
       };
     });
-  }, []);
+  }, [setData]);
 
   const renameCollection = useCallback((id: string, newTitle: string) => {
     setData((prev) => ({
@@ -115,14 +47,14 @@ export const useBookmarks = () => {
         c.id === id ? { ...c, title: newTitle } : c
       ),
     }));
-  }, []);
+  }, [setData]);
   
   const setActiveCollection = useCallback((id: string) => {
     setData((prev) => ({
       ...prev,
       activeCollectionId: id,
     }));
-  }, []);
+  }, [setData]);
 
   // --- Category Management (Operates on Active Collection) ---
 
@@ -145,7 +77,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const deleteCategory = useCallback((id: string) => {
     setData((prev) => ({
@@ -160,7 +92,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const updateCategory = useCallback((id: string, title: string) => {
     setData((prev) => ({
@@ -177,7 +109,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const reorderCategories = useCallback((startIndex: number, endIndex: number) => {
     setData((prev) => {
@@ -198,7 +130,7 @@ export const useBookmarks = () => {
         )
       };
     });
-  }, []);
+  }, [setData]);
 
   // --- Bookmark Management (Operates on Active Collection) ---
 
@@ -226,7 +158,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const deleteBookmark = useCallback((categoryId: string, bookmarkId: string) => {
     setData((prev) => ({
@@ -249,7 +181,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const updateBookmark = useCallback((categoryId: string, bookmarkId: string, updates: Partial<Category['bookmarks'][0]>) => {
     setData((prev) => ({
@@ -274,7 +206,7 @@ export const useBookmarks = () => {
         return col;
       })
     }));
-  }, []);
+  }, [setData]);
 
   const moveBookmark = useCallback((bookmarkId: string, sourceCategoryId: string, targetCategoryId: string, newIndex: number) => {
     setData((prev) => {
@@ -321,59 +253,16 @@ export const useBookmarks = () => {
         collections: newCollections
       };
     });
-  }, []);
-
-  const updateSettings = useCallback((newSettings: Partial<Settings>) => {
-    setData((prev) => ({
-      ...prev,
-      settings: { ...prev.settings, ...newSettings },
-    }));
-  }, []);
-
-  // --- Import/Export ---
-
-  const exportData = useCallback(() => {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `zentab-backup-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, [data]);
-
-  const importData = useCallback((file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const result = e.target?.result as string;
-        const parsed = JSON.parse(result) as AppState;
-        // Basic validation
-        if (parsed.collections && Array.isArray(parsed.collections)) {
-          setData(parsed);
-        } else {
-          alert('Invalid file structure. Expected collections.');
-        }
-      } catch (err) {
-        console.error('Import failed', err);
-        alert('Failed to parse file');
-      }
-    };
-    reader.readAsText(file);
-  }, []);
+  }, [setData]);
 
   // Compute active categories for consumption by components
   const activeCollection = data.collections.find(c => c.id === data.activeCollectionId) || data.collections[0];
   const activeCategories = activeCollection ? activeCollection.categories : [];
 
   return {
-    data,
     activeCategories, 
     activeCollectionId: data.activeCollectionId,
     collections: data.collections,
-    isLoaded,
     addCategory,
     updateCategory,
     deleteCategory,
@@ -381,9 +270,6 @@ export const useBookmarks = () => {
     deleteBookmark,
     updateBookmark,
     reorderCategories,
-    updateSettings,
-    exportData,
-    importData,
     addCollection,
     removeCollection,
     renameCollection,
