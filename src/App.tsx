@@ -110,7 +110,7 @@ function App() {
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          className="p-2 rounded-full backdrop-blur-md border transition-all bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all opacity-40 hover:opacity-100 focus:opacity-100"
+          className="p-2 rounded-full backdrop-blur-md border transition-all bg-white/10 border-white/20 text-white hover:bg-white/20 opacity-40 hover:opacity-100 focus:opacity-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
