@@ -22,11 +22,9 @@ export interface Settings {
   userName?: string; // For greeting
   is24HourFormat: boolean;
   isEditMode: boolean;
-  weatherCity?: string;
   backgroundOpacity: number; // 0-100
   timeDisplaySize?: 'small' | 'medium' | 'large'; // Default: medium
   isSearchEnabled?: boolean;
-  dateFormat?: 'long' | 'short' | 'none'; // default: short
   extensionSettings: Record<string, any>;
 }
 

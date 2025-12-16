@@ -109,9 +109,7 @@ const extensions = getExtensions();
         <TimeDisplay 
           userName={settings.userName}
           is24HourFormat={settings.is24HourFormat ?? true}
-          city={settings.weatherCity}
           size={settings.timeDisplaySize}
-          dateFormat={settings.dateFormat}
         />
         
         {/* Render Extensions */}
