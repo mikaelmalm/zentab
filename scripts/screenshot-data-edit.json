@@ -1,0 +1,46 @@
+{
+  "activeCollectionId": "default-collection",
+  "collections": [
+    {
+      "id": "default-collection",
+      "title": "My Bookmarks",
+      "categories": [
+        {
+          "id": "social",
+          "title": "Social",
+          "bookmarks": [
+            { "id": "1", "title": "Twitter", "url": "https://twitter.com", "icon": "https://twitter.com/favicon.ico" },
+            { "id": "2", "title": "Instagram", "url": "https://instagram.com", "icon": "https://instagram.com/favicon.ico" },
+            { "id": "3", "title": "LinkedIn", "url": "https://linkedin.com", "icon": "https://linkedin.com/favicon.ico" }
+          ]
+        },
+        {
+          "id": "dev",
+          "title": "Development",
+          "bookmarks": [
+            { "id": "4", "title": "GitHub", "url": "https://github.com", "icon": "https://github.com/favicon.ico" },
+            { "id": "5", "title": "Stack Overflow", "url": "https://stackoverflow.com", "icon": "https://stackoverflow.com/favicon.ico" },
+            { "id": "6", "title": "MDN", "url": "https://developer.mozilla.org", "icon": "https://developer.mozilla.org/favicon.ico" }
+          ]
+        },
+        {
+          "id": "news",
+          "title": "News",
+          "bookmarks": [
+            { "id": "7", "title": "Hacker News", "url": "https://news.ycombinator.com", "icon": "https://news.ycombinator.com/favicon.ico" },
+            { "id": "8", "title": "The Verge", "url": "https://www.theverge.com", "icon": "https://www.theverge.com/favicon.ico" }
+          ]
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "userName": "Mikael",
+    "is24HourFormat": true,
+    "isEditMode": true,
+    "isSearchEnabled": true,
+    "backgroundOpacity": 50,
+    "timeDisplaySize": "medium",
+    "extensionSettings": {}
+  }
+}
