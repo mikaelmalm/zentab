@@ -24,7 +24,8 @@ async function startServer() {
     const server = spawn('npm', ['run', 'preview'], {
         cwd: path.join(__dirname, '..'),
         stdio: 'inherit',
-        shell: true
+        shell: true,
+        detached: true
     });
 
     // Wait for server to be ready
@@ -84,10 +85,15 @@ async function captureScreenshots() {
     } finally {
         if (browser) await browser.close();
         if (server) {
-            server.kill();
-             // Spawned processes with shell: true might need tree kill, but for CI/simple script this might handle it.
-             // On linux/mac locally standard kill might leave orphans if not careful, but usually okay for this.
-             process.kill(-server.pid); // Attempt to kill process group if detached, but here it's simple
+            try {
+                // Kill the process group to ensure all child processes (npm, vite) are killed
+                process.kill(-server.pid);
+            } catch (e) {
+                // Ignore errors if process is already dead
+                if (e.code !== 'ESRCH') {
+                    console.error('Error killing server process:', e);
+                }
+            }
         }
         process.exit(0);
     }
