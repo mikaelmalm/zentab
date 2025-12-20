@@ -73,14 +73,24 @@ Built with love using:
 1. **Build the project**:
 
    ```bash
-   npm run build:extension
+   npm run build:chrome
+   # or
+   npm run build:firefox
    ```
 
 2. **Load into Chrome**:
+
    - Open Chrome and navigate to `chrome://extensions`.
    - Enable **Developer mode** (top right).
    - Click **Load unpacked**.
-   - Select the `dist` folder in your project directory.
+   - Select the `dist/chrome` folder in your project directory.
+   - Open a new tab to see **ZenTab** in action!
+
+3. **Add to Firefox**:
+   - Open Firefox and navigate to `about:debugging`.
+   - Click **This Firefox**.
+   - Click **Load Temporary Add-on**.
+   - Select the `dist/firefox` folder in your project directory.
    - Open a new tab to see **ZenTab** in action!
 
 ## 🔌 Extension System
