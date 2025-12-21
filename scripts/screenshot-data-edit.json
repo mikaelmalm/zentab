@@ -159,7 +159,7 @@
   "activeCollectionId": "collection-general",
   "settings": {
     "is24HourFormat": true,
-    "isCleanMode": false,
+    "isEditMode": true,
     "isSearchEnabled": true,
     "backgroundOpacity": 20,
     "timeDisplaySize": "medium",
