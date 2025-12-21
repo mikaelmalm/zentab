@@ -8,43 +8,95 @@
           "id": "cat-social",
           "title": "Social",
           "bookmarks": [
-            { "id": "bm-twitter", "title": "Twitter", "url": "https://twitter.com" },
-            { "id": "bm-reddit", "title": "Reddit", "url": "https://reddit.com" },
-            { "id": "bm-linkedin", "title": "LinkedIn", "url": "https://linkedin.com" }
-          ]
-        },
-        {
-          "id": "cat-dev",
-          "title": "Development",
-          "bookmarks": [
-            { "id": "bm-github", "title": "GitHub", "url": "https://github.com" },
-            { "id": "bm-stackoverflow", "title": "Stack Overflow", "url": "https://stackoverflow.com" },
-            { "id": "bm-mdn", "title": "MDN", "url": "https://developer.mozilla.org" }
+            {
+              "id": "bm-twitter",
+              "title": "Twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "id": "bm-reddit",
+              "title": "Reddit",
+              "url": "https://reddit.com"
+            },
+            {
+              "id": "bm-linkedin",
+              "title": "LinkedIn",
+              "url": "https://linkedin.com"
+            }
           ]
         },
         {
           "id": "cat-news",
           "title": "News",
           "bookmarks": [
-            { "id": "bm-hackernews", "title": "Hacker News", "url": "https://news.ycombinator.com" },
-            { "id": "bm-theverge", "title": "The Verge", "url": "https://www.theverge.com" }
+            {
+              "id": "bm-hackernews",
+              "title": "Hacker News",
+              "url": "https://news.ycombinator.com"
+            },
+            {
+              "id": "bm-theverge",
+              "title": "The Verge",
+              "url": "https://www.theverge.com"
+            }
+          ]
+        },
+        {
+          "id": "cat-dev",
+          "title": "Development",
+          "bookmarks": [
+            {
+              "id": "bm-github",
+              "title": "GitHub",
+              "url": "https://github.com"
+            },
+            {
+              "id": "bm-stackoverflow",
+              "title": "Stack Overflow",
+              "url": "https://stackoverflow.com"
+            },
+            {
+              "id": "bm-mdn",
+              "title": "MDN",
+              "url": "https://developer.mozilla.org"
+            }
           ]
         },
         {
           "id": "cat-design",
           "title": "Design",
           "bookmarks": [
-            { "id": "bm-dribbble", "title": "Dribbble", "url": "https://dribbble.com" },
-            { "id": "bm-behance", "title": "Behance", "url": "https://www.behance.net" }
+            {
+              "id": "bm-dribbble",
+              "title": "Dribbble",
+              "url": "https://dribbble.com"
+            },
+            {
+              "id": "bm-behance",
+              "title": "Behance",
+              "url": "https://www.behance.net"
+            }
           ]
         },
         {
           "id": "cat-entertainment",
           "title": "Entertainment",
           "bookmarks": [
-            { "id": "bm-youtube", "title": "YouTube", "url": "https://youtube.com" },
-            { "id": "bm-netflix", "title": "Netflix", "url": "https://netflix.com" },
-            { "id": "bm-twitch", "title": "Twitch", "url": "https://twitch.tv" }
+            {
+              "id": "bm-youtube",
+              "title": "YouTube",
+              "url": "https://youtube.com"
+            },
+            {
+              "id": "bm-netflix",
+              "title": "Netflix",
+              "url": "https://netflix.com"
+            },
+            {
+              "id": "bm-twitch",
+              "title": "Twitch",
+              "url": "https://twitch.tv"
+            }
           ]
         }
       ]
@@ -57,24 +109,48 @@
           "id": "cat-finance",
           "title": "Finance",
           "bookmarks": [
-            { "id": "bm-bank", "title": "My Bank", "url": "https://www.chase.com" },
-            { "id": "bm-ynab", "title": "YNAB", "url": "https://www.youneedabudget.com" }
+            {
+              "id": "bm-bank",
+              "title": "My Bank",
+              "url": "https://www.chase.com"
+            },
+            {
+              "id": "bm-ynab",
+              "title": "YNAB",
+              "url": "https://www.youneedabudget.com"
+            }
           ]
         },
         {
           "id": "cat-travel",
           "title": "Travel",
           "bookmarks": [
-            { "id": "bm-airbnb", "title": "Airbnb", "url": "https://airbnb.com" },
-            { "id": "bm-booking", "title": "Booking.com", "url": "https://booking.com" }
+            {
+              "id": "bm-airbnb",
+              "title": "Airbnb",
+              "url": "https://airbnb.com"
+            },
+            {
+              "id": "bm-booking",
+              "title": "Booking.com",
+              "url": "https://booking.com"
+            }
           ]
         },
         {
           "id": "cat-recipes",
           "title": "Recipes",
           "bookmarks": [
-            { "id": "bm-allrecipes", "title": "AllRecipes", "url": "https://www.allrecipes.com" },
-            { "id": "bm-seriouseats", "title": "Serious Eats", "url": "https://www.seriouseats.com" }
+            {
+              "id": "bm-allrecipes",
+              "title": "AllRecipes",
+              "url": "https://www.allrecipes.com"
+            },
+            {
+              "id": "bm-seriouseats",
+              "title": "Serious Eats",
+              "url": "https://www.seriouseats.com"
+            }
           ]
         }
       ]
