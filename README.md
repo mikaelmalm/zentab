@@ -68,7 +68,7 @@ Built with love using:
 
 4. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## 🧩 Add as Chrome Extension
+## 🧩 Add as browser extension
 
 1. **Build the project**:
 
