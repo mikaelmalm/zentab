@@ -65,7 +65,7 @@ function App() {
 
   return (
     <main
-      className={`min-h-screen p-8 relative transition-colors duration-700 flex flex-col justify-around ${
+      className={`min-h-screen p-8 relative transition-colors duration-700  ${
         !settings.backgroundImageUrl
           ? "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"
           : "bg-black"
@@ -130,7 +130,7 @@ function App() {
       </div>
 
       {/* Time & Date */}
-      <div className="relative z-10 mb-12 mt-12 flex flex-col items-center">
+      <div className="relative z-10 mb-12 mt-12 flex flex-col items-center min-h-[30dvh]">
         <TimeDisplay
           userName={settings.userName}
           is24HourFormat={settings.is24HourFormat ?? true}
@@ -146,12 +146,13 @@ function App() {
         })}
       </div>
 
-      {/* Search Bar */}
-      {(settings.isSearchEnabled ?? true) && (
-        <SearchBar value={searchQuery} onChange={setSearchQuery} />
-      )}
       {/* Bookmarks Grid */}
       <div className="relative z-10">
+        {/* Search Bar */}
+        {(settings.isSearchEnabled ?? true) && (
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        )}
+
         <BookmarkGrid
           categories={filteredCategories}
           onAddCategory={addCategory}
