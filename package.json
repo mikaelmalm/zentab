@@ -7,8 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:chrome": "tsc -b && EXT_BUILD=true BROWSER=chrome vite build",
-    "build:firefox": "tsc -b && EXT_BUILD=true BROWSER=firefox vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

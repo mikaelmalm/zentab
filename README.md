@@ -73,9 +73,9 @@ Built with love using:
 1. **Build the project**:
 
    ```bash
-   npm run build:chrome
+   npm run build
    # or
-   npm run build:firefox
+   bun build
    ```
 
 2. **Load into Chrome**:
@@ -87,11 +87,36 @@ Built with love using:
    - Open a new tab to see **ZenTab** in action!
 
 3. **Add to Firefox**:
+
    - Open Firefox and navigate to `about:debugging`.
    - Click **This Firefox**.
    - Click **Load Temporary Add-on**.
    - Select the `dist/firefox` folder in your project directory.
    - Open a new tab to see **ZenTab** in action!
+
+4. **Add to Firefox (Permanent Install)**:
+
+If you are using Firefox Developer Edition (or Nightly) and want to install the extension permanently without signing:
+
+1. Configure Firefox:
+
+
+    - Navigate to about:config.
+    - Search for xpinstall.signatures.required.
+    - Set it to false.
+
+2. Create the .xpi package:
+
+
+    - Important: Select all files inside the project folder (manifest.json, content.js icons/, etc.).
+    - Do NOT zip the project folder itself, only its contents.
+    - Right-click and "Compress" or "Zip" them.
+    - Rename the resulting .zip file to .xpi.
+
+3. Install:
+
+
+    - Drag and drop the .xpi file into Firefox window or go to about:addons, click the gear icon, and select "Install Add-on From File...".
 
 ## 🔌 Extension System
 

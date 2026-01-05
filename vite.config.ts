@@ -13,7 +13,7 @@ export default defineConfig({
   // If EXT_BUILD is set, use relative paths for extension support
   base: process.env.EXT_BUILD === 'true' ? './' : '/zentab/',
   build: {
-    outDir: process.env.BROWSER ? `dist/${process.env.BROWSER}` : 'dist',
+    outDir: 'dist',
     emptyOutDir: true,
   }
 })
