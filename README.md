@@ -75,7 +75,7 @@ Built with love using:
    ```bash
    npm run build
    # or
-   bun build
+   bun run build
    ```
 
 2. **Load into Chrome**:
