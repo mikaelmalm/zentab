@@ -30,7 +30,7 @@ export const BookmarkItem = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ 
+  } = useSortable({
     id: bookmark.id,
     data: {
       type: 'Bookmark',
@@ -78,9 +78,9 @@ export const BookmarkItem = ({
   };
 
   return (
-    <div 
-      ref={setNodeRef} 
-      style={style} 
+    <div
+      ref={setNodeRef}
+      style={style}
       className={`group flex items-center justify-between bg-black/20 hover:bg-black/30 rounded p-2 transition-colors ${isDragging ? 'z-50 ring-2 ring-white/50' : ''}`}
     >
       {isEditing ? (
@@ -91,7 +91,7 @@ export const BookmarkItem = ({
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={(e) => e.stopPropagation()} 
+            onKeyDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           />
           <input
@@ -99,7 +99,7 @@ export const BookmarkItem = ({
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.stopPropagation()} 
+            onKeyDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           />
           <input
@@ -107,7 +107,7 @@ export const BookmarkItem = ({
             className="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-sm px-1"
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
-            onKeyDown={(e) => e.stopPropagation()} 
+            onKeyDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
           />
           <div className="flex justify-end gap-2 mt-1">
@@ -119,32 +119,31 @@ export const BookmarkItem = ({
         <>
           {/* Drag Handle */}
           {isEditMode && !isSearchActive && (
-             <div {...attributes} {...listeners} className="cursor-grab text-white/30 hover:text-white/80 mr-2 flex-shrink-0 touch-none">
-                <GripVertical size={14} />
-             </div>
+            <div {...attributes} {...listeners} className="cursor-grab text-white/30 hover:text-white/80 mr-2 flex-shrink-0 touch-none">
+              <GripVertical size={14} />
+            </div>
           )}
 
           <a
             href={bookmark.url}
-            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 truncate text-sm font-medium flex-1 text-white/90 group-hover:text-white"
           >
             <div className="p-1.5 bg-white/10 rounded-full shrink-0">
               {bookmark.icon ? (
-                 <img src={bookmark.icon} alt="" className="w-[14px] h-[14px] object-cover" />
-               ) : (
-                 <img 
-                   src={getFaviconUrl(bookmark.url) || ''} 
-                   alt=""
-                   className="w-[14px] h-[14px] object-cover"
-                   onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                   }}
-                 />
-               )}
-               <Globe size={14} className={`${bookmark.icon || getFaviconUrl(bookmark.url) ? 'hidden' : ''}`} />
+                <img src={bookmark.icon} alt="" className="w-[14px] h-[14px] object-cover" />
+              ) : (
+                <img
+                  src={getFaviconUrl(bookmark.url) || ''}
+                  alt=""
+                  className="w-[14px] h-[14px] object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+              )}
+              <Globe size={14} className={`${bookmark.icon || getFaviconUrl(bookmark.url) ? 'hidden' : ''}`} />
             </div>
             <span className="truncate">{bookmark.title}</span>
           </a>
